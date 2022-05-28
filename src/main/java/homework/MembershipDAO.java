@@ -15,6 +15,7 @@ public class MembershipDAO extends JDBConnect{
 		super(application);
 	}
 	
+	// DB Insert
 	public int memberInsert(MembershipDTO dto) {
 		
 		int result = 0;
@@ -47,6 +48,7 @@ public class MembershipDAO extends JDBConnect{
 		return result;
 	}
 	
+	// Login
 	public MembershipDTO memberLogin(String u_id, String u_pass) {
 		
 		MembershipDTO dto = new MembershipDTO();

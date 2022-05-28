@@ -19,6 +19,7 @@ public class MembershipDTO {
 	public MembershipDTO() {
 		super();
 	}
+	// constructor
 	public MembershipDTO(String id, String password, String name, String gender, String birthday,
 			String zipcode, String address, String email_address, String mobile_number, String phone_number) {
 		super();

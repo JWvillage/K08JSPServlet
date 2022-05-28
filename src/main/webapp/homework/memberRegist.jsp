@@ -44,6 +44,7 @@
     }
     </script>
     <script>
+    // submit 시 필수 입력 사항 입력 여부 확인
     function registValidate(form){
      	if(form.user_id.value == "") {
     		alert("아이디를 입력하세요.");
@@ -119,6 +120,8 @@
     function idCheck(form){
     	alert("아이디 중복체크는 하지않습니다.");
     }
+    
+    // Email 입력 ( select 입력 사항 )
     function inputEmail(form){
     	
 		if(form.email_domain.value == "") {
@@ -132,6 +135,8 @@
 		
     	/* alert("이메일을 선택하면 도메인 부분에 입력되게 해주세요.") */
     }
+    
+    // 전화번호 focus ( 휴대전화, 집전화 )
     function commonFocusMove(obj, charLen, nextObj){
 		
     	if(obj.value.length == charLen) {
@@ -292,6 +297,5 @@
     </div>
 </div>
 </form>
-
 </body>
 </html>
