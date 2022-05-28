@@ -41,8 +41,8 @@ public class MemberDAO extends JDBConnect {
 			// 반환된 ResultSet 객체를 통해 회원 정보가 있는지 확인
 			if(rs.next()) {
 				// 정보가 있다면 DTO객체에 회원 정보를 저장
-				dto.setId(rs.getString("id"));
-				dto.setPass(rs.getString("pass"));
+				dto.setId(rs.getString(1));
+				dto.setPass(rs.getString(2));
 				dto.setName(rs.getString(3));
 				dto.setRegidate(rs.getString(4));
 			}
