@@ -32,6 +32,7 @@ String oraclePwd = application.getInitParameter("OraclePwd");
 
 //JDBC를 통해 오라클 접속
 MembershipDAO dao = new MembershipDAO(oracleDriver, oracleURL, oracleId, oraclePwd);
+
 // dto에 값들 저장
 MembershipDTO dto = new MembershipDTO(userId, userPwd, userName, userGen, userBirth, userZCode, userAddr, userEmAddr,
 		userMobNum, userPhoNum);

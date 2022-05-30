@@ -41,7 +41,7 @@ request.setAttribute("requestPerson", new Person("안중근", 31));
 		즉, 하나의 요청을 둘 이상의 페이지가 공유할 수 있다.
 		Forward 명령을 만나기 전까지의 모든 내용은 버퍼에서 삭제되고,
 		Forward 된 페이지의 내용만 화면에 출력되는 특징이 있다.
-		즉, Forward 란 현재 페이지로 들ㅇ러온 요청을 다른 페이지에서도 공유할 수 있도록
+		즉, Forward 란 현재 페이지로 들어온 요청을 다른 페이지에서도 공유할 수 있도록
 		전달하는 것을 말한다.
 	*/
 	request.getRequestDispatcher("RequestForward.jsp?paramHan=한글&paramEng=English").forward(request, response);

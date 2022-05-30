@@ -1,7 +1,6 @@
 package homework;
 
 import javax.servlet.ServletContext;
-import javax.servlet.jsp.JspWriter;
 
 import common.JDBConnect;
 
@@ -76,10 +75,60 @@ public class MembershipDAO extends JDBConnect{
 			}
 			
 		} catch (Exception e) {
+			System.out.println("로그인 중 오류 발생");
 			e.printStackTrace();
 		}
 		
 		return dto;
+	}
+	
+	// idValidate1
+	public MembershipDTO idValidate(String u_id) {
+		
+		MembershipDTO dto = new MembershipDTO();
+		
+		String query = "select id from membership where id = ?";
+		
+		try {
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, u_id);
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				dto.setId(rs.getString("id"));
+			}
+			
+		} catch (Exception e) {
+			System.out.println("아이디 중복 확인 중 오류 발생");
+			e.printStackTrace();
+		}
+		
+		return dto;
+	}
+	// idValidate2
+	public int idValidate2(String u_id) {
+		
+		int result = 0;
+		
+		String query = "select id from membership where id = ?";
+		
+		try {
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, u_id);
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				result = 1;
+			} else {
+				result = 2;
+			}
+			
+		} catch (Exception e) {
+			System.out.println("아이디 중복 확인 중 오류 발생");
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 	
 }

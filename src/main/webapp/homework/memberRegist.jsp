@@ -1,3 +1,5 @@
+<%@page import="utils.JSFunction"%>
+<%@page import="homework.MembershipDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -36,7 +38,9 @@
                 console.log("address", data.address);
                 //회원 가입폼에 적용
                 var f = document.registFrm;//<form>태그의 DOM객체를 변수에 저장
+                // 우편번호(zonecode)
                 f.zipcode.value = data.zonecode;
+                // 주소(address)
                 f.address1.value = data.address;
                 f.address2.focus();
             }
@@ -46,28 +50,41 @@
     <script>
     // submit 시 필수 입력 사항 입력 여부 확인
     function registValidate(form){
+     	var id_val = document.getElementById("id_validate");
+     	var p_check = document.getElementById("pass_check");
      	if(form.user_id.value == "") {
     		alert("아이디를 입력하세요.");
         	form.user_id.focus();
         	return false;
+    	} else {
+    		if (id_val.innerHTML != "사용가능합니다.") {
+    		alert("아이디를 확인하세요.");
+    		form.user_id.focus();
+    		return false;
+    		} 
     	}
      	if(form.pass1.value == "") {
      		alert("비밀번호를 입력하세요.");
         	form.pass1.focus();
         	return false;
+     	} else {
+     		if(p_check.innerHTML != "사용가능합니다.") {
+     			alert("비밀번호를 확인하세요.");
+     			form.pass1.focus();
+            	return false;
+     		}
      	}
      	if(form.pass2.value == "") {
      		alert("비밀번호를 확인하세요.");
      		form.pass2.focus();
      		return false;
      	}
-		/*
-		if(form.msg == "비밀번호가 일치하지 않습니다.") {
+		// submit 후 비밀번호 확인 시 다르면 경고창 띄우기
+		if(form.pass1.value != form.pass2.value) {
      		alert("비밀번호를 다시 확인하세요.");
         	form.pass2.focus();
         	return false;
      	} 
-		*/
      	if(form.name.value == "") {
      		alert("이름을 입력하세요.");
         	form.name.focus();
@@ -117,8 +134,97 @@
 		/* alert("폼값이 전송되기 전 유효성 체크를 해주세요."); */
 
     }
+    
+    // 아이디 중복검사 클릭 시 유효성 검사
     function idCheck(form){
-    	alert("아이디 중복체크는 하지않습니다.");
+    	var id_val = document.getElementById("id_validate");
+    	// 아이디 입력 X
+    	if(form.user_id.value == "") {
+    		alert("아이디 입력 후 중복확인하세요.");
+    		form.user_id.focus();
+    		
+    		// 아이디 입력 O
+    	} else {
+    		// 아이디 값을 넣어서 검증할 변수 선언
+    		var u_id = form.user_id.value;
+    		
+    		// 아이디가 8 ~ 16자리인지 확인
+    		if(u_id.length >= 8 && u_id.length <= 16) {
+    			// 아이디에 숫자, 영문만 있는지 확인하여 참인지 거짓인지 판단할 변수 선언
+    			var check = true;
+    			// 아이디 전체를 문자 하나하나 잘라서 아스키 코드로 확인
+    			for(var i = 0; i < u_id.length; i++) {
+    				var ascii = u_id.charCodeAt(i);
+    				if(!((ascii >= 48 && ascii <= 57)
+    						|| (ascii >= 65 && ascii <= 90) || (ascii >= 97 && ascii <= 122))) {
+    					// 아이디의 문자 중 하나라도 숫자, 영문이 아니면 false 반환
+   					 	check = false;
+    				}
+    			}
+    			// check가 false이면 영문, 숫자 이외의 문자가 입력되었으므로 새로 입력하라는 문구 출력
+    			if(check == false) {
+    				/* alert("영문과 숫자만 입력하세요."); */
+    				id_val.innerHTML = "영문과 숫자만 입력하세요.";
+    				id_val.style.color = "red";
+    				form.user_id.focus();
+    			} else {
+    				// check가 true이면 중복확인 검사 팝업 창 띄우기
+    				
+    				window.open("id_duplication.jsp?id=" + form.user_id.value, "idover", "width=500px, height=300px");
+					
+    				// 영문, 숫자만 있으므로 사용가능하다는 문구 출력
+					id_val.innerHTML = "사용가능합니다.";
+					id_val.style.color = "skyblue";
+					/* form.pass1.focus(); */
+    				/* alert("사용가능한 아이디입니다."); */
+    			}
+    		} else {
+    			// 아이디가 8 ~ 16자리가 아니므로 다시 입력하라는 문구 출력
+    			/* alert("8~16 자리로 입력하세요.") */
+    			id_val.innerHTML = "8~16 자리로 입력하세요.";
+    			id_val.style.color = "red";
+    			form.user_id.focus();
+    		}
+    	}
+    	return false;
+    	/* alert("사용가능한 아이디 입니다."); */
+    }
+    
+    // 비밀번호 입력 시 유효성 검사
+    function passCheck(form) {
+    	if(form.pass1.value != null) {
+    		var u_pass = form.pass1.value;
+    		var check = document.getElementById("pass_check");
+    		
+    		if(u_pass.length >= 6 && u_pass.length <= 20) {
+    			var num = 0;
+    			var upp_Alpha = 0;
+    			var low_Alpha = 0;
+    			var symbol = 0;
+    			for(var i = 0; i < u_pass.length; i++) {
+    				var ascii = u_pass.charCodeAt(i);
+    				if(ascii >= 48 && ascii <= 57) num++;
+    				if(ascii >= 65 && ascii <= 90) upp_Alpha++;
+    				if(ascii >= 97 && ascii <= 122) low_Alpha++;
+    				if((ascii >= 33 && ascii <= 47) || (ascii >= 58 && ascii <= 64)
+    						|| (ascii >= 91 && ascii <= 96)
+    						|| (ascii >= 123 && ascii <= 126)) symbol++;
+    			}
+    			if( num > 0 && upp_Alpha > 0 && low_Alpha > 0 && symbol > 0 ) {
+        			check.innerHTML = "사용가능합니다.";
+    				check.style.color = "skyblue";
+        			form.pass2.focus();
+    			} else {
+    				check.innerHTML = "영문(대소문자)/숫자/특수문자가 모두 포함되어야 합니다.";
+    				check.style.color = "red";
+        			/* form.pass1.focus(); */
+    			}
+    		} else {
+    			check.innerHTML = "6~20 자리로 입력하세요.";
+				check.style.color = "red";
+    			/* form.pass1.focus(); */
+    		}
+    	}
     }
     
     // Email 입력 ( select 입력 사항 )
@@ -145,7 +251,7 @@
     	
 		/* alert("글자수 "+charLen+"이 되면 "+nextObj+"으로 포커스가 이동합니다."); */
     }
-    // 비밀번호 체크
+    // 입력시 잘못된 사항
     $(function () {
         $('#pwd1').keyup(function () {
           $('#pwd2').val('');
@@ -155,9 +261,27 @@
         $('#pwd2').keyup(function () {
           if ($('#pwd1').val() == $('#pwd2').val()) {
             $('#msg').html('비밀번호가 일치합니다.').attr('style', 'color: skyblue');
+            $('input[name=name]').focus();
           } else {
             $('#msg').html('비밀번호가 일치하지 않습니다.').attr('style', 'color: red');
+            $('#pwd2').focus();
           }
+        });
+        
+        $('input[name=mobile2]').keyup(function(){
+        	if(isNaN($('input[name=mobile2]').val()) == true) {
+        		alert("숫자만 입력하세요.");
+        		$('input[name=mobile2]').val('');
+        		$('input[name=mobile2]').focus();
+        	}
+        });
+        
+        $('input[name=mobile3]').keyup(function(){
+        	if(isNaN($('input[name=mobile3]').val()) == true) {
+        		alert("숫자만 입력하세요.");
+        		$('input[name=mobile3]').val('');
+        		$('input[name=mobile3]').focus();
+        	}
         });
       });
     </script>
@@ -175,8 +299,10 @@
             <tr>
                 <td><span class="red">*</span> 아이디</td>
                 <td>
-                    <input type="text" class="w01" name="user_id" value="" />       
-                    <button type="button" onclick="idCheck(this.form);">중복확인</button>             
+                    <input type="text" class="w01" name="user_id" id="id" value="" />
+	                    <button type="button" onclick="idCheck(this.form);">중복확인</button>
+                    <br />
+                    <span id="id_validate" style="color: skyblue"></span>
                 </td>
             </tr>
             <tr>
@@ -188,7 +314,8 @@
             <tr>
                 <td><span class="red">*</span> 비밀번호</td>
                 <td>
-                    <input type="password" class="w01" id="pwd1" name="pass1" value="" />                   
+                    <input type="password" class="w01" id="pwd1" name="pass1" value="" onblur="passCheck(this.form);"/><br />
+                    <span id="pass_check"></span>
                 </td>
             </tr>
             <tr>
@@ -202,7 +329,7 @@
             <tr>
                 <td><span class="red">*</span> 비밀번호확인</td>
                 <td>
-                    <input type="password" class="w01" id="pwd2" name="pass2" value="" />
+                    <input type="password" class="w01" id="pwd2" name="pass2" value="" /><br />
                     <span id="msg"></span>
                 </td>
             </tr>

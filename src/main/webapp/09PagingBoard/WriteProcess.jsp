@@ -21,7 +21,21 @@ dto.setId(session.getAttribute("UserId").toString());
 // DAO 객체 생성을 통해 DB 연결 및 회원정보 입력 처리
 BoardDAO dao = new BoardDAO(application);
 
-int iResult = dao.insertWrite(dto);
+// 기존에 1개씩 입력하는 방식
+// int iResult = dao.insertWrite(dto);
+
+
+// 더미데이터 100개 한꺼번에 입력하기
+
+int iResult = 0;
+for(int i = 0; i <= 100; i++) {
+	dto.setTitle(title + "-" + i);
+	iResult = dao.insertWrite(dto);
+}
+
+
+
+
 dao.close();
 
 if (iResult == 1) {
