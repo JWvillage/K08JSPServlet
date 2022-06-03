@@ -18,6 +18,7 @@ DBCP(DataBase Connection Pool : 커넥션 풀)
 	: DB와 연결된 커넥션 객체를 미리 만들어 풀(Pool)에 저장해 뒀다가 필요할 때 가져다 쓰고
 	반납하는 기술을 말한다. DB에 부하를 줄이고 자원을 효율적으로 관리할 수 있다.
 */
+
 public class DBConnPool {
 	   public Connection con;
 	   public Statement stmt;

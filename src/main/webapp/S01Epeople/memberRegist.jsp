@@ -1,5 +1,5 @@
 <%@page import="utils.JSFunction"%>
-<%@page import="homework.MembershipDAO"%>
+<%@page import="S01Epeople.MembershipDAO"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>

@@ -12,7 +12,7 @@
 <h4>로케일 설정</h4>
 <c:set var="today" value="<%= new java.util.Date() %>" />
 
-한글로 설정 : <fmt:setLocale value="ko_kr"/> 
+한글로 설정 : <fmt:setLocale value="ko_KR"/> 
 <fmt:formatNumber value="10000" type="currency" />
 <fmt:formatDate value="${ today }" /> <br />
 

@@ -1,6 +1,6 @@
 <%@page import="utils.JSFunction"%>
-<%@page import="homework.MembershipDTO"%>
-<%@page import="homework.MembershipDAO"%>
+<%@page import="S01Epeople.MembershipDTO"%>
+<%@page import="S01Epeople.MembershipDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
