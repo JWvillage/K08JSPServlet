@@ -37,5 +37,19 @@ public class JSFunction {
         }
         catch (Exception e) {}
     }
+    
+    public static String alertMsg(String msg, JspWriter out) {
+    	String script = "";
+    	
+    	try {
+    		script = ""
+    				+ "<script>"
+    				+ "    alert('" + msg + "');"
+    				+ "</script>";
+    		out.println(script);
+    	}
+    	catch (Exception e) {}
+    	return script;
+    }   
 }
 

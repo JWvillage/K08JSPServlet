@@ -1,3 +1,4 @@
+<%@page import="utils.BoardPage"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
@@ -44,7 +45,7 @@ dao.close();
 <body>
 <jsp:include page="../Common/Link.jsp" />
 
-<h2>목록 보기(List)</h2>
+<h2>목록 보기(List) - 현재 페이지 : <%= pageNum %> (전체 : <%= totalPage %>)</h2>
 <!-- 검색 form -->
 <!-- form 태그에 action 속성이 없으면 form값은 현재 페이지로 전송된다. -->
 <form method="get">
@@ -90,7 +91,7 @@ if (boardLists.isEmpty()) {
 	// 게시물의 개수만큼 즉, List컬렉션에 저장된 DTO 객체의 개수만큼 반복한다. 
 	for (BoardDTO dto : boardLists) {
 		// 전체 레코드 수를 1씩 차감하면서 List에 출력한다.
-		virtualNum = totalCount--;
+		virtualNum = totalCount - (((pageNum - 1) * pageSize) + countNum++);
 %>
 	<tr align="center">
 		<td><%= virtualNum %></td>
@@ -106,8 +107,12 @@ if (boardLists.isEmpty()) {
 }
 %>
 </table>
+<!-- 목록 하단의 [글쓰기] 버튼 -->
 <table border="1" width="90%">
-    <tr align="right">
+    <tr align="center">
+    	<td>
+    		<%= BoardPage.pagingStr(totalCount, pageSize, blockPage, pageNum, request.getRequestURL()) %>
+    	</td>
         <td>
          <button type="button" onclick="location.href='Write.jsp';">
          	글쓰기
